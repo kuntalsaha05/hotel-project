@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Staff Dashboard | Blue Orchid</title>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@400;500;700&display=swap" rel="stylesheet" />
+
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+    <style>
+        /* --- Import Shared CSS Variables --- */
+        :root {
+            --orchid-blue: #2D4C7F;
+            --orchid-gold: #E8C547;
+            --orchid-ivory: #F9F9F9;
+            --orchid-charcoal: #1F1F1F;
+            --orchid-navy: #142850;
+            --font-display: "Playfair Display", serif;
+            --font-body: "Poppins", sans-serif;
+            
+            /* Status Colors */
+            --status-new: #3498DB; /* Blue */
+            --status-confirmed: #2ECC71; /* Green */
+            --status-cancelled: #E74C3C; /* Red */
+            
+            --status-clean: #2ECC71; /* Green */
+            --status-dirty: #F44336; /* Red */
+            --status-occupied: #FFC107; /* Yellow */
+            --status-maintenance: #9E9E9E; /* Grey */
+        }
+
+        /* --- Base & Body Styles --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: radial-gradient(circle at top left, var(--orchid-navy) 0%, var(--orchid-blue) 50%, var(--orchid-charcoal) 100%);
+            color: var(--orchid-ivory);
+            font-family: var(--font-body);
+            padding: 1.5rem;
+            min-height: 100vh;
+        }
+
+        /* --- Glassmorphism Effect --- */
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border-radius: 1rem; /* 16px */
+        }
+
+        /* --- Layout Container --- */
+        .container {
+            width: 100%;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* --- Header --- */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-family: var(--font-display);
+            color: var(--orchid-gold);
+            font-size: 2.25rem; /* 36px */
+        }
+        
+        .btn {
+            cursor: pointer;
+            font-family: inherit;
+            border: none;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            background-color: transparent;
+            color: var(--orchid-gold);
+            border: 2px solid var(--orchid-gold);
+            padding: 0.5rem 1.25rem;
+            border-radius: 9999px;
+            font-weight: 600;
+        }
+        .btn:hover {
+            background-color: var(--orchid-gold);
+            color: var(--orchid-navy);
+        }
+        
+        .btn-confirm {
+            background-color: var(--status-confirmed);
+            color: white;
+            border-color: var(--status-confirmed);
+        }
+        .btn-confirm:hover {
+             background-color: white;
+             color: var(--status-confirmed);
+        }
+        
+        .btn-cancel {
+            background-color: var(--status-cancelled);
+            color: white;
+            border-color: var(--status-cancelled);
+        }
+        .btn-cancel:hover {
+             background-color: white;
+             color: var(--status-cancelled);
+        }
+
+        /* --- Section Titles --- */
+        .section-title {
+            font-family: var(--font-display);
+            font-size: 1.75rem; /* 28px */
+            color: white;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--orchid-gold);
+        }
+
+        /* --- Main Grid Layout --- */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+        
+        @media (min-width: 1024px) {
+            .dashboard-grid {
+                /* 1fr for rooms, 2fr for bookings */
+                grid-template-columns: 1fr 2fr; 
+            }
+        }
+
+        /* --- Shared Table Styles --- */
+        .table-container {
+            width: 100%;
+            overflow-x: auto; /* Allow horizontal scroll on small screens */
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            white-space: nowrap; /* Prevents cells from wrapping */
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        th {
+            font-weight: 600;
+            color: var(--orchid-gold);
+            font-size: 0.875rem;
+            text-transform: uppercase;
+        }
+        
+        td {
+            font-size: 0.9rem;
+            vertical-align: middle;
+        }
+        
+        /* Table cell for buttons */
+        td.actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        /* --- Room Status Section --- */
+        .room-status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .room-card {
+            padding: 1.5rem;
+            text-align: center;
+        }
+        
+        .room-card h3 {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .room-card select {
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 0.5rem;
+            padding: 0.5rem;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            outline: none;
+        }
+        
+        .room-card select:focus {
+             border-color: var(--orchid-gold);
+             box-shadow: 0 0 0 2px var(--orchid-gold);
+        }
+        
+        .room-card select option {
+            color: var(--orchid-charcoal);
+            font-weight: 600;
+        }
+        
+        /* Style select based on its value */
+        .room-card select.status-clean { border-left: 4px solid var(--status-clean); }
+        .room-card select.status-dirty { border-left: 4px solid var(--status-dirty); }
+        .room-card select.status-occupied { border-left: 4px solid var(--status-occupied); }
+        .room-card select.status-maintenance { border-left: 4px solid var(--status-maintenance); }
+
+
+        /* --- Booking Status Badge --- */
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: white;
+            background-color: #777; /* Default */
+        }
+        
+        .status-badge.status-new { background-color: var(--status-new); }
+        .status-badge.status-confirmed { background-color: var(--status-confirmed); }
+        .status-badge.status-cancelled { background-color: var(--status-cancelled); }
+        
+        /* --- Loading/Empty State --- */
+        .placeholder {
+            padding: 2rem;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <!-- 
+      --- Login Guard ---
+      This script checks if the user is "logged in" via sessionStorage.
+      If not, it redirects them to the login page.
+      This MUST run before any other script logic.
+    -->
+    <script>
+        if (sessionStorage.getItem('staffLoggedIn') !== 'true') {
+            window.location.href = 'login.html';
+        }
+    </script>
+
+
+    <header class="header container">
+        <h1>Staff Dashboard</h1>
+        <button id="logout-btn" class="btn">Logout</button>
+    </header>
+
+    <main class="container">
+        
+        <div class="dashboard-grid">
+            
+            <!-- Column 1: Room Status -->
+            <section id="room-status-section">
+                <h2 class="section-title">Room Status</h2>
+                <div id="room-status-grid" class="room-status-grid glass">
+                    <!-- 
+                      Rooms will be dynamically loaded here by JavaScript.
+                      Example structure:
+                      <div class="room-card glass">
+                        <h3>Room 101 (₹2500)</h3>
+                        <select data-room-id="101" class="status-clean">
+                          <option value="clean">Clean</option>
+                          <option value="dirty">Dirty</option>
+                          <option value="occupied">Occupied</option>
+                          <option value="maintenance">Maintenance</option>
+                        </select>
+                      </div>
+                    -->
+                    <p id="rooms-loading" class="placeholder" style="grid-column: 1 / -1;">Loading room statuses...</p>
+                </div>
+            </section>
+            
+            <!-- Column 2: Bookings -->
+            <section id="bookings-section">
+                <h2 class="section-title">Booking Requests</h2>
+                <div class="table-container glass">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Status</th>
+                                <th>Guest Name</th>
+                                <th>Room Type</th>
+                                <th>Check-in</th>
+                                <th>Check-out</th>
+                                <th>Contact</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bookings-table-body">
+                            <!-- 
+                              Bookings will be dynamically loaded here by JavaScript.
+                              Example row:
+                              <tr>
+                                <td><span class="status-badge status-new">New</span></td>
+                                <td>John Doe</td>
+                                <td>Orchid Suite</td>
+                                <td>2025-12-20</td>
+                                <td>2025-12-25</td>
+                                <td>john@example.com</td>
+                                <td class="actions">
+                                  <button class="btn btn-confirm" data-booking-id="abc...">Confirm</button>
+                                  <button class="btn btn-cancel" data-booking-id="abc...">Cancel</button>
+                                </td>
+                              </tr>
+                            -->
+                            <tr id="bookings-loading">
+                                <td colspan="7" class="placeholder">Loading new bookings...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- 
+      This script contains all the logic for the dashboard,
+      including fetching data from the backend and handling UI.
+    -->
+    <script>
+        // --- Logout Button Logic (Run this first!) ---
+        // This has no dependencies, so we attach it immediately
+        // to ensure it works even if other scripts fail.
+        const logoutBtn = document.getElementById('logout-btn');
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', () => {
+                sessionStorage.removeItem('staffLoggedIn');
+                window.location.href = 'login.html';
+            });
+        } else {
+            console.error("Logout button not found.");
+        }
+
+
+        // --- Global API URLs ---
+        // --- THIS IS THE FIX ---
+        // All URLs MUST point to the port your server is running on (3000)
+        const API_BASE_URL = 'http://localhost:3000/api';
+        const bookingsApiUrl = `${API_BASE_URL}/bookings`;
+        const roomsApiUrl = `${API_BASE_URL}/rooms`;
+
+
+        // --- Booking Management Logic ---
+        
+        // 1. Fetch and render all bookings
+        async function loadBookings() {
+            const tableBody = document.getElementById("bookings-table-body");
+            try {
+                const response = await fetch(bookingsApiUrl);
+                if (!response.ok) throw new Error('Failed to fetch bookings');
+                
+                const bookings = await response.json();
+
+                if (bookings.length === 0) {
+                    tableBody.innerHTML = `<tr><td colspan="7" class="placeholder">No bookings found.</td></tr>`;
+                    return;
+                }
+
+                tableBody.innerHTML = ""; // Clear loading/old data
+                
+                bookings.forEach(booking => {
+                    const row = createBookingRow(booking);
+                    tableBody.appendChild(row);
+                });
+
+            } catch (error) {
+                console.error("Error loading bookings:", error);
+                tableBody.innerHTML = `<tr><td colspan="7" class="placeholder">Error loading bookings.</td></tr>`;
+            }
+        }
+        
+        // 2. Create the HTML for a single booking row
+        function createBookingRow(booking) {
+            const tr = document.createElement("tr");
+            
+            // Format status
+            const statusClass = `status-${booking.status || 'new'}`;
+            const statusText = (booking.status || 'new').toUpperCase();
+            
+            // Format contact
+            const contact = booking.email || booking.phone || 'N/A';
+            
+            // Format dates (if they exist)
+            const checkIn = booking.checkIn ? new Date(booking.checkIn).toLocaleDateString() : 'N/A';
+            const checkOut = booking.checkOut ? new Date(booking.checkOut).toLocaleDateString() : 'N/A';
+
+            tr.innerHTML = `
+                <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                <td>${booking.name}</td>
+                <td>${booking.roomType}</td>
+                <td>${checkIn}</td>
+                <td>${checkOut}</td>
+                <td>${contact}</td>
+                <td class="actions">
+                    ${booking.status === 'new' ? `
+                        <button class="btn btn-confirm" data-booking-id="${booking.id}">Confirm</button>
+                        <button class="btn btn-cancel" data-booking-id="${booking.id}">Cancel</button>
+                    ` : `<span>Managed</span>`}
+                </td>
+            `;
+            
+            // Add event listeners for the new buttons
+            tr.querySelector('.btn-confirm')?.addEventListener('click', () => updateBookingStatus(booking.id, 'confirmed'));
+            tr.querySelector('.btn-cancel')?.addEventListener('click', () => updateBookingStatus(booking.id, 'cancelled'));
+            
+            return tr;
+        }
+        
+        // 3. Update booking status (PATCH request)
+        async function updateBookingStatus(bookingId, newStatus) {
+            console.log(`Updating booking ${bookingId} to ${newStatus}`);
+            try {
+                const response = await fetch(`${bookingsApiUrl}/${bookingId}`, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ status: newStatus })
+                });
+
+                if (response.ok) {
+                    loadBookings(); // Refresh the list
+                    
+                    // If a booking is cancelled, we should make the room 'clean' again
+                    // This is complex logic, for now, we just reload
+                } else {
+                    console.error('Failed to update booking status');
+                }
+            } catch (error) {
+                console.error("Error updating booking status:", error);
+            }
+        }
+        
+        
+        // --- Room Status Management Logic ---
+        
+        // 1. Fetch and render all rooms
+        async function loadRooms() {
+            const grid = document.getElementById("room-status-grid");
+            const loadingMsg = document.getElementById("rooms-loading");
+            
+            try {
+                const response = await fetch(roomsApiUrl);
+                if (!response.ok) throw new Error('Failed to fetch rooms');
+
+                const rooms = await response.json();
+
+                if (rooms.length === 0) {
+                    grid.innerHTML = `<p class="placeholder" style="grid-column: 1 / -1;">No rooms found.</p>`;
+                    return;
+                }
+
+                grid.innerHTML = ""; // Clear loading/old data
+                
+                rooms.forEach(room => {
+                    const card = createRoomCard(room);
+                    grid.appendChild(card);
+                });
+
+            } catch (error) {
+                console.error("Error loading rooms:", error);
+                grid.innerHTML = `<p class="placeholder" style="grid-column: 1 / -1;">Error loading rooms.</p>`;
+            }
+        }
+        
+        // 2. Create the HTML for a single room card
+        function createRoomCard(room) {
+            const div = document.createElement("div");
+            div.className = "room-card glass";
+            
+            const statusClass = `status-${room.Status || 'clean'}`;
+            
+            // Display name and rent (e.g., "standard (₹2500)")
+            const roomName = room.name || `Room ${room.id}`;
+            const roomRent = room.Rent ? ` (₹${room.Rent})` : '';
+            
+            div.innerHTML = `
+                <h3>${roomName}${roomRent}</h3>
+                <select data-room-id="${room.id}" class="${statusClass}">
+                  <option value="clean" ${room.Status === 'clean' ? 'selected' : ''}>Clean</option>
+                  <option value="dirty" ${room.Status === 'dirty' ? 'selected' : ''}>Dirty</option>
+                  <option value="occupied" ${room.Status === 'occupied' ? 'selected' : ''}>Occupied</option>
+                  <option value="maintenance" ${room.Status === 'maintenance' ? 'selected' : ''}>Maintenance</option>
+                </select>
+            `;
+            
+            const select = div.querySelector('select');
+            select.addEventListener('change', (e) => {
+                // Update class on select for styling
+                e.target.className = `status-${e.target.value}`;
+                // Update Server
+                updateRoomStatus(room.id, e.target.value);
+            });
+            
+            return div;
+        }
+
+        // 3. Update room status (PATCH request)
+        async function updateRoomStatus(roomId, newStatus) {
+            console.log(`Updating room ${roomId} to ${newStatus}`);
+            try {
+                const response = await fetch(`${roomsApiUrl}/${roomId}`, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ status: newStatus })
+                });
+
+                if (!response.ok) {
+                    console.error('Failed to update room status');
+                }
+                // We don't need to reload, the change is reflected
+            }
+            catch (error) {
+                console.error("Error updating room status:", error);
+            }
+        }
+        
+        // --- Run Initialization on Page Load ---
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            // Load both sets of data when the page opens
+            loadBookings();
+            loadRooms();
+            
+            // Safely call Lucide
+            try {
+                lucide.createIcons();
+            } catch (e) {
+                console.error("Lucide icons failed to create:", e);
+            }
+        });
+        
+    </script>
+</body>
+</html>

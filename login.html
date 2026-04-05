@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Staff Login | Blue Orchid</title>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@400;500;700&display=swap" rel="stylesheet" />
+
+    <style>
+        /* --- Import Shared CSS Variables --- */
+        :root {
+            --orchid-blue: #2D4C7F;
+            --orchid-gold: #E8C547;
+            --orchid-ivory: #F9F9F9;
+            --orchid-charcoal: #1F1F1F;
+            --orchid-navy: #142850;
+            --font-display: "Playfair Display", serif;
+            --font-body: "Poppins", sans-serif;
+        }
+
+        /* --- Base & Body Styles --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            height: 100%;
+        }
+        
+        body {
+            background: radial-gradient(circle at top left, var(--orchid-navy) 0%, var(--orchid-blue) 50%, var(--orchid-charcoal) 100%);
+            color: var(--orchid-ivory);
+            font-family: var(--font-body);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+
+        /* --- Glassmorphism Effect --- */
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border-radius: 1rem; /* 16px */
+        }
+
+        /* --- Button Style --- */
+        .btn {
+            cursor: pointer;
+            font-family: inherit;
+            border: none;
+            transition: opacity 0.3s ease;
+            background-color: var(--orchid-gold);
+            color: var(--orchid-navy);
+            padding: 0.75rem 1.5rem; /* 12px 24px */
+            border-radius: 9999px; /* full-rounded */
+            font-weight: 600;
+            font-size: 1rem;
+            width: 100%;
+        }
+        .btn:hover { opacity: 0.9; }
+
+        /* --- Login Card --- */
+        .login-card {
+            width: 100%;
+            max-width: 400px;
+            padding: 2.5rem;
+            text-align: center;
+        }
+        
+        .login-card h1 {
+            font-family: var(--font-display);
+            color: var(--orchid-gold);
+            font-size: 2.25rem; /* 36px */
+            margin-bottom: 1.5rem;
+        }
+
+        .login-card form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .login-card .input-group {
+            text-align: left;
+        }
+
+        .login-card label {
+            display: block;
+            font-size: 0.875rem; /* 14px */
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 0.5rem; /* 8px */
+        }
+        
+        .login-card input {
+            font-family: inherit;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 0.5rem; /* 8px */
+            padding: 0.75rem 1rem; /* 12px 16px */
+            color: white;
+            outline: none;
+            font-size: 1rem;
+        }
+        
+        .login-card input:focus {
+            border-color: var(--orchid-gold);
+            box-shadow: 0 0 0 2px var(--orchid-gold);
+        }
+
+        #login-error {
+            color: #F44336; /* --status-dirty */
+            margin-top: 1rem;
+            font-size: 0.875rem;
+            min-height: 1.25em; /* Reserve space */
+        }
+
+        .homepage-link {
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 2rem;
+            display: block;
+            font-size: 0.875rem;
+            text-decoration: underline;
+            transition: color 0.3s ease;
+        }
+        .homepage-link:hover {
+            color: var(--orchid-gold);
+        }
+
+    </style>
+</head>
+<body>
+    <!-- 
+      ADD_CHANGE: Login Guard
+      This script checks if the user is *already* logged in.
+      If so, it redirects them to the dashboard immediately.
+    -->
+    <script>
+        // UPDATED: Use sessionStorage to check
+        if (sessionStorage.getItem('staffLoggedIn') === 'true') {
+            window.location.href = 'dashboard.html';
+        }
+    </script>
+
+    <main class="login-card glass">
+        <h1>Staff Login</h1>
+        <form id="login-form">
+            <div class="input-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button type="submit" class="btn">Login</button>
+            <p id="login-error"></p>
+        </form>
+        <a href="index.html" class="homepage-link">Back to Homepage</a>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const loginForm = document.getElementById('login-form');
+            const loginError = document.getElementById('login-error');
+
+            // --- THIS IS THE FIX ---
+            // The API URL for your *local* backend server
+            const apiUrl = 'http://localhost:3000/api/login';
+
+            loginForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+
+                // --- NEW: Backend Login Check ---
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ username, password })
+                    });
+
+                    const result = await response.json();
+
+                    if (response.ok && result.success) {
+                        // 1. Set a "session" item in sessionStorage
+                        sessionStorage.setItem('staffLoggedIn', 'true');
+                        
+                        // 2. Redirect to the dashboard
+                        window.location.href = 'dashboard.html';
+                    } else {
+                        // 3. Show an error message from the server
+                        loginError.textContent = result.message || 'Invalid username or password.';
+                    }
+
+                } catch (error) {
+                    console.error('Login Fetch Error:', error);
+                    // This error happens if the server is down
+                    loginError.textContent = 'Error: Could not connect to login service.';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

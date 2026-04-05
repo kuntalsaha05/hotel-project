@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Book Your Stay | Blue Orchid</title>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@400;500;700&display=swap" rel="stylesheet" />
+
+    <style>
+        :root {
+            --orchid-blue: #2D4C7F;
+            --orchid-gold: #E8C547;
+            --orchid-ivory: #F9F9F9;
+            --orchid-charcoal: #1F1F1F;
+            --orchid-navy: #142850;
+            --font-display: "Playfair Display", serif;
+            --font-body: "Poppins", sans-serif;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background: radial-gradient(circle at top left, var(--orchid-navy) 0%, var(--orchid-blue) 50%, var(--orchid-charcoal) 100%);
+            color: var(--orchid-ivory);
+            font-family: var(--font-body);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 1.5rem;
+            min-height: 100vh;
+        }
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border-radius: 1rem;
+        }
+        .btn {
+            cursor: pointer;
+            font-family: inherit;
+            border: none;
+            transition: opacity 0.3s ease;
+            background-color: var(--orchid-gold);
+            color: var(--orchid-navy);
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            font-size: 1rem;
+            width: 100%;
+        }
+        .btn:hover { opacity: 0.9; }
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background-color: #9E9E9E;
+        }
+        input, select {
+            font-family: inherit;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 0.5rem;
+            padding: 0.75rem 1rem;
+            color: white;
+            outline: none;
+        }
+        input:focus, select:focus {
+            border-color: var(--orchid-gold);
+            box-shadow: 0 0 0 2px var(--orchid-gold);
+        }
+        select option { color: var(--orchid-charcoal); }
+        label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 0.5rem;
+        }
+        .header {
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .header h1 {
+            font-family: var(--font-display);
+            color: var(--orchid-gold);
+            font-size: 2.25rem;
+            margin-bottom: 0.5rem;
+        }
+        .header a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: underline;
+            transition: color 0.3s ease;
+        }
+        .header a:hover { color: var(--orchid-gold); }
+        
+        .booking-card {
+            width: 100%;
+            max-width: 600px;
+            padding: 2.5rem;
+        }
+        .booking-card form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+        @media (min-width: 640px) {
+            .form-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        #custom-alert {
+            position: fixed;
+            top: 1.25rem;
+            right: 1.25rem;
+            z-index: 100;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            color: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            max-width: 300px;
+            transition: opacity 0.3s, transform 0.3s;
+            transform: translateX(100%);
+            opacity: 0;
+            background-color: #E74C3C; /* Red for errors */
+        }
+        #custom-alert.success {
+            background-color: #2ECC71; /* Green for success */
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <h1>Book Your Stay</h1>
+        <a href="index.html">&larr; Back to Homepage</a>
+    </header>
+
+    <main class="booking-card glass">
+        <form id="booking-form">
+            <!-- Full Name -->
+            <div>
+                <label for="name">Full Name</label>
+                <input type="text" id="name" name="name" required />
+            </div>
+            
+            <!-- Contact Grid -->
+            <div class="form-grid">
+                <div>
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required />
+                </div>
+                <div>
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" />
+                </div>
+            </div>
+            
+            <!-- Dates Grid -->
+            <div class="form-grid">
+                <div>
+                    <label for="check-in">Check-in</label>
+                    <input type="date" id="check-in" name="check-in" required />
+                </div>
+                <div>
+                    <label for="check-out">Check-out</label>
+                    <input type="date" id="check-out" name="check-out" required />
+                </div>
+            </div>
+            
+            <!-- Room Type -->
+            <div>
+                <label for="room-type">Room Type</label>
+                <select id="room-type" name="room-type" required>
+                    <option value="">Select Room...</option>
+                    <option value="standard">Standard Room (₹2500)</option>
+                    <option value="deluxe">Deluxe Room (₹3500)</option>
+                    <option value="suite">Orchid Suite (₹5000)</option>
+                </select>
+            </div>
+            
+            <!-- Submit Button -->
+            <button type="submit" class="btn" id="submit-btn">
+                Confirm Booking
+            </button>
+        </form>
+    </main>
+
+    <!-- Custom Alert Placeholder -->
+    <div id="custom-alert" class="glass"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const bookingForm = document.getElementById('booking-form');
+            const submitBtn = document.getElementById('submit-btn');
+            
+            // --- This is the API URL for your *local* backend server ---
+            // It MUST point to localhost:3000
+            const apiUrl = 'http://localhost:3000/api/bookings';
+
+            if (bookingForm) {
+                bookingForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    
+                    // Disable button to prevent double-clicks
+                    submitBtn.disabled = true;
+                    submitBtn.textContent = 'Submitting...';
+
+                    // --- THIS IS THE FIX ---
+                    // Manually get data from the form
+                    const formData = new FormData(bookingForm);
+                    
+                    // Manually build the data object with the *correct keys*
+                    // that server.js is expecting (e.g., 'checkIn').
+                    const bookingData = {
+                        name: formData.get('name'),
+                        email: formData.get('email'),
+                        phone: formData.get('phone'),
+                        checkIn: formData.get('check-in'),   // Map 'check-in' to 'checkIn'
+                        checkOut: formData.get('check-out'), // Map 'check-out' to 'checkOut'
+                        roomType: formData.get('room-type'), // Map 'room-type' to 'roomType'
+                        status: 'new'
+                    };
+                    // --- END OF FIX ---
+
+                    try {
+                        const response = await fetch(apiUrl, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            // Send the *manually created* object
+                            body: JSON.stringify(bookingData)
+                        });
+
+                        const result = await response.json();
+
+                        if (response.ok) { // Check for 200-299 status
+                            showAlert('Booking successful! We will be in touch.', 'success');
+                            bookingForm.reset();
+                        } else {
+                            // Show the specific error from the server if available
+                            showAlert(result.message || 'Error submitting booking. Please try again.');
+                        }
+
+                    } catch (error) {
+                        console.error('Fetch Error:', error);
+                        // This error happens if the server is down or unreachable
+                        showAlert('Error: Could not connect to booking service. Please try again later.');
+                    } finally {
+                        // Re-enable the button
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = 'Confirm Booking';
+                    }
+                });
+            }
+
+            // --- Custom Alert Function ---
+            const customAlert = document.getElementById('custom-alert');
+            
+            function showAlert(message, type = 'error') {
+                if (!customAlert) return;
+
+                customAlert.textContent = message;
+                
+                if (type === 'success') {
+                    customAlert.style.backgroundColor = '#2ECC71';
+                } else {
+                    customAlert.style.backgroundColor = '#E74C3C';
+                }
+
+                customAlert.style.transform = 'translateX(0)';
+                customAlert.style.opacity = '1';
+                
+                setTimeout(() => {
+                    customAlert.style.transform = 'translateX(100%)';
+                    customAlert.style.opacity = '0';
+                }, 3000);
+            }
+        });
+    </script>
+</body>
+</html>

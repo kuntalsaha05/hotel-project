@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blue Orchid | Luxury Seaside Hotel</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@400;500;700&display=swap" rel="stylesheet" />
+
+  <!-- Icons (for contact section) -->
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+  <!--
+    All website styles are contained in this block.
+    No external CSS libraries (like Tailwind) are used.
+  -->
+  <style>
+    /* --- CSS Variables (from former Tailwind config) --- */
+    :root {
+      --orchid-blue: #2D4C7F;
+      --orchid-gold: #E8C547;
+      --orchid-ivory: #F9F9F9;
+      --orchid-charcoal: #1F1F1F;
+      --orchid-navy: #142850;
+      --font-display: "Playfair Display", serif;
+      --font-body: "Poppins", sans-serif;
+    }
+
+    /* --- Base & Body Styles --- */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: radial-gradient(circle at top left, var(--orchid-navy) 0%, var(--orchid-blue) 50%, var(--orchid-charcoal) 100%);
+      color: var(--orchid-ivory);
+      font-family: var(--font-body);
+      overflow-x: hidden;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    a:hover {
+      color: var(--orchid-gold);
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 0.5rem; /* 8px */
+    }
+    
+    button {
+      cursor: pointer;
+      font-family: inherit;
+      border: none;
+      transition: opacity 0.3s ease;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+    
+    input, textarea, select {
+      font-family: inherit;
+      width: 100%;
+      background-color: rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 0.5rem; /* 8px */
+      padding: 0.75rem 1rem; /* 12px 16px */
+      color: white;
+      outline: none;
+    }
+    
+    input:focus, textarea:focus, select:focus {
+      border-color: var(--orchid-gold);
+      box-shadow: 0 0 0 2px var(--orchid-gold);
+    }
+    
+    select option {
+      color: var(--orchid-charcoal);
+    }
+    
+    label {
+      display: block;
+      font-size: 0.875rem; /* 14px */
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.8);
+      margin-bottom: 0.5rem; /* 8px */
+    }
+
+    /* --- Glassmorphism Effect --- */
+    .glass {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+
+    /* --- Layout Container --- */
+    .container {
+      width: 100%;
+      max-width: 1280px; /* Standard container width */
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 1.5rem; /* 24px */
+      padding-right: 1.5rem; /* 24px */
+    }
+
+    /* --- Main Button Style --- */
+    .btn {
+      background-color: var(--orchid-gold);
+      color: var(--orchid-navy);
+      padding: 0.5rem 1.25rem; /* 8px 20px */
+      border-radius: 9999px; /* full-rounded */
+      font-weight: 600;
+      /* Required for <button> to align with <a> */
+      display: inline-block;
+      text-decoration: none;
+      text-align: center;
+    }
+    
+    .btn-large {
+        padding: 0.75rem 2rem; /* 12px 32px */
+        font-size: 1.125rem; /* 18px */
+    }
+
+    .btn-outline {
+      background-color: transparent;
+      color: var(--orchid-gold);
+      border: 2px solid var(--orchid-gold);
+      /* Adjust padding to account for the 2px border */
+      padding: calc(0.5rem - 2px) calc(1.25rem - 2px); 
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .btn-outline:hover {
+      background-color: var(--orchid-gold);
+      color: var(--orchid-navy);
+      opacity: 1; /* Override default button hover */
+    }
+
+    /* --- Section Padding --- */
+    .section-padding {
+      padding-top: 6rem; /* 96px */
+      padding-bottom: 6rem; /* 96px */
+    }
+    
+    .section-bg {
+      background-color: rgba(20, 40, 80, 0.3); /* orchid-navy/30 */
+    }
+
+    /* --- Headings --- */
+    .section-title {
+      font-family: var(--font-display);
+      font-size: 2.25rem; /* 36px */
+      color: var(--orchid-gold);
+      text-align: center;
+      margin-bottom: 4rem; /* 64px */
+    }
+
+    /* --- Navbar --- */
+    #navbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      color: white;
+    }
+    
+    #navbar .nav-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 1rem; /* 16px */
+      padding-bottom: 1rem; /* 16px */
+    }
+    
+    #navbar .nav-logo {
+      font-family: var(--font-display);
+      font-size: 1.5rem; /* 24px */
+      font-weight: 700;
+      color: var(--orchid-gold);
+    }
+    
+    #navbar .nav-links-desktop {
+      display: none; /* Hidden by default */
+      align-items: center;
+    }
+    
+    #navbar .nav-links-desktop a,
+    #navbar .nav-links-desktop button { /* Target buttons too */
+      margin-left: 1.5rem; /* 24px */
+    }
+    
+    #navbar .nav-links-desktop .btn {
+      margin-left: 1.5rem; /* 24px */
+    }
+    
+    #mobile-menu-btn {
+      background: none;
+      color: white;
+    }
+    
+    #mobile-menu-btn svg {
+      width: 1.5rem; /* 24px */
+      height: 1.5rem; /* 24px */
+    }
+    
+    #mobile-menu {
+      display: none; /* JS will toggle this */
+      flex-direction: column;
+      align-items: center;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      padding-top: 1.5rem; /* 24px */
+      padding-bottom: 1.5rem; /* 24px */
+    }
+    
+    #mobile-menu.show {
+      display: flex;
+    }
+    
+    #mobile-menu a,
+    #mobile-menu button { /* Target buttons too */
+      margin-bottom: 1rem; /* 16px */
+    }
+
+    /* --- Hero Section --- */
+    #home {
+      position: relative;
+      height: 90vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      overflow: hidden;
+    }
+    
+    #home .hero-bg {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      z-index: 0;
+    }
+    
+    #home .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background-color: rgba(0, 0, 0, 0.6);
+      z-index: 0;
+    }
+    
+    #home .hero-content {
+      position: relative;
+      z-index: 10;
+      padding: 2rem; /* 32px */
+      border-radius: 1rem; /* 16px */
+      max-width: 90%;
+    }
+    
+    #home .hero-content h1 {
+      font-family: var(--font-display);
+      font-size: 3rem; /* 48px */
+      margin-bottom: 1.5rem; /* 24px */
+      color: var(--orchid-gold);
+    }
+    
+    #home .hero-content p {
+      font-size: 1.125rem; /* 18px */
+      color: rgba(255, 255, 255, 0.9);
+      margin-bottom: 2rem; /* 32px */
+    }
+
+    /* --- Rooms Section --- */
+    #rooms .rooms-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2.5rem; /* 40px */
+    }
+    
+    #rooms .room-card {
+      padding: 1.5rem; /* 24px */
+      border-radius: 1rem; /* 16px */
+      text-align: center;
+    }
+    
+    #rooms .room-card img {
+      margin-bottom: 1.5rem; /* 24px */
+      margin-left: auto;
+      margin-right: auto;
+      width: 100%;
+      height: 250px; /* Added fixed height */
+      object-fit: cover; /* Added object-fit */
+    }
+    
+    #rooms .room-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.5rem; /* 24px */
+      color: white;
+      margin-bottom: 0.5rem; /* 8px */
+    }
+    
+    #rooms .room-card p {
+      color: var(--orchid-gold);
+      margin-bottom: 1rem; /* 16px */
+    }
+
+    /* --- Facilities Section --- */
+    #facilities .facilities-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem; /* 32px */
+    }
+    
+    #facilities .facility-card {
+      padding: 1.5rem; /* 24px */
+      border-radius: 1rem; /* 16px */
+      text-align: center;
+    }
+    
+    #facilities .facility-card i {
+      width: 3rem; /* 48px */
+      height: 3rem; /* 48px */
+      color: var(--orchid-gold);
+      margin: 0 auto 1rem;
+    }
+    
+    #facilities .facility-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.5rem; /* 24px */
+      color: white;
+      margin-bottom: 0.5rem; /* 8px */
+    }
+    
+    #facilities .facility-card p {
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    /* --- Gallery Section --- */
+    #gallery .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem; /* 16px */
+    }
+    
+    #gallery .gallery-column {
+      display: grid;
+      gap: 1rem; /* 16px */
+    }
+    
+    #gallery .gallery-column img {
+      height: auto;
+      width: 100%;
+      display: block;
+      object-fit: cover; /* Added object-fit */
+    }
+
+    /* --- Reviews Section --- */
+    #reviews .reviews-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem; /* 32px */
+    }
+    
+    #reviews .review-card {
+      padding: 2rem; /* 32px */
+      border-radius: 1rem; /* 16px */
+      text-align: center;
+    }
+    
+    #reviews .review-card .stars {
+      display: flex;
+      justify-content: center;
+      gap: 0.25rem; /* 4px */
+      color: var(--orchid-gold);
+      margin-bottom: 1.5rem; /* 24px */
+    }
+    
+    /* Make lucide stars filled */
+    #reviews .review-card .stars i[data-lucide="star"] {
+      fill: var(--orchid-gold);
+    }
+    
+    #reviews .review-card .review-text {
+      font-style: italic;
+      font-size: 1.125rem; /* 18px */
+      color: rgba(255, 255, 255, 0.9);
+      margin-bottom: 1.5rem; /* 24px */
+    }
+    
+    #reviews .review-card .review-author {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem; /* 8px */
+    }
+    
+    #reviews .review-card .review-author img {
+      width: 3.5rem; /* 56px */
+      height: 3.5rem; /* 56px */
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--orchid-gold);
+    }
+    
+    #reviews .review-card .review-author span {
+      font-weight: 600;
+      font-size: 1rem; /* 16px */
+    }
+
+    /* --- Contact Section --- */
+    #contact .contact-card {
+      max-width: 64rem; /* 1024px */
+      margin-left: auto;
+      margin-right: auto;
+      border-radius: 1rem; /* 16px */
+      overflow: hidden;
+    }
+    
+    #contact .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+    
+    #contact form {
+      padding: 2rem; /* 32px */
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem; /* 24px */
+    }
+    
+    #contact .contact-info {
+      background-color: rgba(0, 0, 0, 0.2);
+      padding: 2rem; /* 32px */
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem; /* 24px */
+    }
+    
+    #contact .contact-info h3 {
+      font-family: var(--font-display);
+      font-size: 1.875rem; /* 30px */
+      color: white;
+    }
+    
+    #contact .contact-info p {
+      color: rgba(255, 255, 255, 0.8);
+    }
+    
+    #contact .contact-info-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem; /* 12px */
+    }
+    
+    #contact .contact-info-item i {
+      width: 1.25rem; /* 20px */
+      height: 1.25rem; /* 20px */
+      color: var(--orchid-gold);
+      flex-shrink: 0;
+    }
+    
+    #contact .contact-info-item span {
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    /* --- Footer --- */
+    footer {
+      text-align: center;
+      padding: 2.5rem 0;
+      margin-top: 6rem; /* 96px */
+    }
+    
+    footer h3 {
+      font-family: var(--font-display);
+      font-size: 1.875rem; /* 30px */
+      color: var(--orchid-gold);
+      margin-bottom: 1rem; /* 16px */
+    }
+    
+    footer .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem; /* 24px */
+      margin: 1.5rem 0;
+    }
+    
+    footer .social-links a {
+      color: rgba(255, 255, 255, 0.8);
+    }
+    
+    footer .social-links i {
+      width: 1.5rem; /* 24px */
+      height: 1.5rem; /* 24px */
+    }
+    
+    footer p {
+      font-size: 0.875rem; /* 14px */
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    /* --- Booking Modal --- */
+    /* REMOVED: All .booking-modal styles */
+    
+    /* --- Custom Alert Box --- */
+    #custom-alert {
+      position: fixed;
+      top: 1.25rem; /* 20px */
+      right: 1.25rem; /* 20px */
+      z-index: 100;
+      padding: 1rem; /* 16px */
+      border-radius: 0.5rem; /* 8px */
+      color: white;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      max-width: 300px;
+      transition: opacity 0.3s, transform 0.3s;
+      transform: translateX(100%);
+      opacity: 0;
+    }
+
+    /* --- Scroll Animations --- */
+    [data-animate-on-scroll] {
+      opacity: 1; /* Made visible by default */
+      transform: translateY(30px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+
+    [data-animate-on-scroll].is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    /* --- Responsive Tablet+ Styles (md breakpoint) --- */
+    @media (min-width: 768px) {
+      .section-title {
+        font-size: 3rem; /* 48px */
+      }
+      
+      #navbar .nav-logo {
+        font-size: 1.875rem; /* 30px */
+      }
+      
+      #navbar .nav-links-desktop {
+        display: flex;
+      }
+      
+      #mobile-menu-btn {
+        display: none;
+      }
+      
+      #mobile-menu {
+        display: none !important; /* Ensure it's hidden on desktop */
+      }
+      
+      #home .hero-content {
+        padding: 3rem; /* 48px */
+        max-width: 42rem; /* 672px */
+      }
+      
+      #home .hero-content h1 {
+        font-size: 3.75rem; /* 60px */
+      }
+      
+      #rooms .rooms-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      
+      #facilities .facilities-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      #gallery .gallery-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+      
+      #reviews .reviews-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      #contact .contact-card {
+        max-width: 64rem; /* 1024px */
+      }
+      
+      #contact .contact-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      
+      #contact form {
+        padding: 3rem; /* 48px */
+      }
+      
+      #contact .contact-info {
+        padding: 3rem; /* 48px */
+      }
+      
+      /* REMOVED: modal responsive styles */
+    }
+    
+    /* --- Responsive Laptop+ Styles (lg breakpoint) --- */
+    @media (min-width: 1024px) {
+      #facilities .facilities-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+      
+      #reviews .reviews-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header id="navbar" class="glass">
+    <nav class="container nav-content">
+      <a href="#home" class="nav-logo">
+        Blue Orchid
+      </a>
+      
+      <!-- Desktop Nav -->
+      <div class="nav-links-desktop">
+        <a href="#home">Home</a>
+        <a href="#rooms">Rooms</a>
+        <a href="#facilities">Facilities</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#reviews">Reviews</a> <!-- Added Reviews Link -->
+        <a href="#contact">Contact</a>
+        <a href="./book-now.html" class="btn book-now-btn"> <!-- CHANGED to <a> tag -->
+          Book Now
+        </a>
+        <a href="./login.html" class="btn btn-outline" style="margin-left: 1rem;">
+          Staff Login
+        </a>
+      </div>
+      
+      <!-- Mobile Menu Button -->
+      <button id="mobile-menu-btn">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+      </button>
+    </nav>
+    
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="glass">
+      <a href="#home" class="mobile-nav-link">Home</a>
+      <a href="#rooms" class="mobile-nav-link">Rooms</a>
+      <a href="#facilities" class="mobile-nav-link">Facilities</a>
+      <a href="#gallery" class="mobile-nav-link">Gallery</a>
+      <a href="#reviews" class="mobile-nav-link">Reviews</a> <!-- Added Reviews Link -->
+      <a href="#contact" class="mobile-nav-link">Contact</a>
+      <a href="./book-now.html" class="btn book-now-btn" style="margin-bottom: 1rem;"> <!-- CHANGED to <a> tag -->
+        Book Now
+      </a>
+      <a href="./login.html" class="btn btn-outline">
+        Staff Login
+      </a>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section id="home" class="hero-section">
+    <div class="hero-bg" style="background-image:url('https://loremflickr.com/1920/1080/hotel,beach,ocean')"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content glass" data-animate-on-scroll>
+      <h1>Welcome to Blue Orchid</h1>
+      <p>Luxury redefined — where the sea meets sophistication.</p>
+      <a href="./book-now.html" class="btn btn-large book-now-btn"> <!-- CHANGED to <a> tag -->
+        Book Your Stay
+      </a>
+    </div>
+  </section>
+
+  <!-- Rooms Section -->
+  <section id="rooms" class="section-padding">
+    <div class="container">
+      <h2 class="section-title" data-animate-on-scroll>Our Exquisite Rooms</h2>
+      <div class="rooms-grid">
+        
+        <!-- Room 1 -->
+        <div class="room-card glass" data-animate-on-scroll>
+          <img src="https://www.ohotelsindia.com/pune/images/afac6de5e93b1d2018cc56a76528cdd2.jpg" alt="Deluxe Room" />
+          <h3>Standard Room</h3>
+          <p>₹2500 / Night</p>
+          <a href="./book-now.html" class="btn book-now-btn"> <!-- CHANGED to <a> tag -->
+            Book Now
+          </a>
+        </div>
+        
+        <!-- Room 2 -->
+        <div class="room-card glass" data-animate-on-scroll style="transition-delay:100ms;">
+          <img src="https://www.orchidhotel.com/static/website/img/hotels/pune/Room-details/Orchid-Suite/5.webp" alt="Orchid Suite" />
+          <h3>Deluxe Room</h3>
+          <p>₹3500 / Night</p>
+          <a href="./book-now.html" class="btn book-now-btn"> <!-- CHANGED to <a> tag -->
+            Book Now
+          </a>
+        </div>
+        
+        <!-- Room 3 -->
+        <div class="room-card glass" data-animate-on-scroll style="transition-delay:200ms;">
+          <img src="https://beyondcruise.com/wp-content/uploads/po-cruises-balcony-cabin-render-view-1024x682.jpg" alt="Family Seaview Room" />
+          <h3>Orchid Suite</h3>
+          <p>₹5000 / Night</p>
+          <a href="./book-now.html" class="btn book-now-btn"> <!-- CHANGED to <a> tag -->
+            Book Now
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Facilities Section -->
+  <section id="facilities" class="section-padding section-bg">
+    <div class="container">
+      <h2 class="section-title" data-animate-on-scroll>World-Class Facilities</h2>
+      <div class="facilities-grid">
+        
+        <!-- Facility 1 -->
+        <div class="facility-card glass" data-animate-on-scroll>
+          <i data-lucide="waves"></i>
+          <h3>Infinity Pool</h3>
+          <p>Overlooking the ocean, our pool blends seamlessly with the horizon.</p>
+        </div>
+        
+        <!-- Facility 2 -->
+        <div class="facility-card glass" data-animate-on-scroll style="transition-delay:100ms;">
+          <i data-lucide="utensils-crossed"></i>
+          <h3>Gourmet Dining</h3>
+          <p>Experience culinary excellence at our award-winning restaurant.</p>
+        </div>
+        
+        <!-- Facility 3 -->
+        <div class="facility-card glass" data-animate-on-scroll style="transition-delay:200ms;">
+          <i data-lucide="gem"></i>
+          <h3>Luxury Spa</h3>
+          <p>Rejuvenate your body and mind with our exclusive spa treatments.</p>
+        </div>
+        
+        <!-- Facility 4 -->
+        <div class="facility-card glass" data-animate-on-scroll style="transition-delay:300ms;">
+          <i data-lucide="dumbbell"></i>
+          <h3>Fitness Center</h3>
+          <p>State-of-the-art equipment with panoramic sea views.</p>
+        </div>
+        
+      </div>
+    </div>
+  </section>
+
+  <!-- Gallery Section -->
+  <section id="gallery" class="section-padding">
+    <div class="container">
+      <h2 class="section-title" data-animate-on-scroll>Moments at Orchid</h2>
+      
+      <div class="gallery-grid">
+        <div class="gallery-column">
+            <div data-animate-on-scroll>
+                <img src="https://interiordesign.net/wp-content/uploads/2024/04/InteriorDesign_March2024_Brave-New-World-11.jpg" alt="Restaurant dining area">
+            </div>
+            <div data-animate-on-scroll>
+                <img src="https://cdn.prod.website-files.com/5c6d6c45eaa55f57c6367749/65d7ed44d1fd234978f801dc_lobbypix-022224-4.webp" alt="Hotel Lobby">
+            </div>
+        </div>
+        <div class="gallery-column">
+            <div data-animate-on-scroll>
+                <img src="https://media.istockphoto.com/id/1050564510/photo/3d-rendering-beautiful-luxury-bedroom-suite-in-hotel-with-tv.jpg?s=612x612&w=0&k=20&c=ZYEso7dgPl889aYddhY2Fj3GOyuwqliHkbbT8pjl_iM=" alt="Suite interior">
+            </div>
+            <div data-animate-on-scroll>
+                <img src="https://images.unsplash.com/photo-1611222566360-ef1f0a8c6451?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YmVhY2glMjB2aWV3fGVufDB8fDB8fHww&fm=jpg&q=60&w=3000" alt="Beach view">
+            </div>
+        </div>
+        <div class="gallery-column">
+            <div data-animate-on-scroll>
+                <img src="https://interiordesign.net/wp-content/uploads/2024/04/InteriorDesign_March2024_Brave-New-World-11.jpg" alt="Restaurant dining area">
+            </div>
+            <div data-animate-on-scroll>
+                <img src="https://media.istockphoto.com/id/610118560/photo/interior-of-massage-room-in-spa-salon.jpg?s=612x612&w=0&k=20&c=A9X6UE3ydjyOZ8s8X-7PTCSn04XUJ3HA5RMQfBlTazE=" alt="Spa treatment room">
+            </div>
+        </div>
+        <div class="gallery-column">
+            <div data-animate-on-scroll>
+                <img src="httpsaxc.com/photos/18968280/pexels-photo-18968280/free-photo-of-beautiful-sunset-over-ocean-shore.jpeg" alt="Sunset over the ocean">
+            </div>
+            <div data-animate-on-scroll>
+                <img src="https://images.adsttc.com/media/images/6286/38a2/8dff/2001/669a/ebc9/large_jpg/sunyata-eco-hotel-design-kacheri_5.jpg?1652963511" alt="Hotel architectural details">
+            </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Customer Reviews Section -->
+  <section id="reviews" class="section-padding">
+    <div class="container">
+      <h2 class="section-title" data-animate-on-scroll>What Our Guests Say</h2>
+      <div class="reviews-grid">
+        
+        <!-- Review 1 -->
+        <div class="review-card glass" data-animate-on-scroll>
+          <div class="stars">
+            <i data-lucide="star"></i>
+            <i data-lucide="star"></i>
+            <i data-lucide="star"></i>
+            <i data-lucide="star"></i>
+            <i data-lucide="star"></i>
+          </div>
+          <p class="review-text">"Absolutely breathtaking. The view from our suite was something out of a dream. The staff treated us like royalty. We will be back!"</p>
+          <div class="review-author">
+            <img src="https://loremflickr.com/100/100/woman,portrait" alt="Reviewer 1">
+            <span>Sarah J.</span>
+          </div>
+        </div>
+        
+        <!-- Review 2 -->
+        <div class="review-card glass" data-animate-on-scroll style="transition-delay:100ms;">
+          <div class="stars">
+            <i data-lucide="star"></i>
+            <i data-lucide="star"></i>
+            <i data-lucide="star"></i>
+            <i data-lucide="star"></i>
+            <i data-lucide="star"></i>
+          </div>
+          <p class="review-text">"The perfect romantic getaway. From the infinity pool to the gourmet dining, every detail was flawless. Highly recommended."</GUESTS>
+          <div class="review-author">
+            <img src="https://loremflickr.com/100/100/man,portrait" alt="Reviewer 2">
+            <span>Mark T.</span>
+          </div>
+        </div>
+        
+        <!-- Review 3 -->
+        <div class="review-card glass" data-animate-on-scroll style="transition-delay:200ms;">
+          <div class="stars">
+            <i data-lucide="star"></i>
+            <i data-lucide="star"></i>
+            <i data-lucide="star"></i>
+            <i data-lucide="star"></i>
+            <i data-lucide="star"></i>
+          </div>
+          <p class="review-text">"We brought our family and had a wonderful time. The family seaview room was spacious, and the kids loved the easy beach access."</GUESTS>
+          <div class="review-author">
+            <img src="https://loremflickr.com/100/100/family,portrait" alt="Reviewer 3">
+            <span>The Chen Family</span>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="section-padding section-bg">
+    <div class="container">
+      <h2 class="section-title" data-animate-on-scroll>Get In Touch</h2>
+      <div class="contact-card glass" data-animate-on-scroll>
+        <div class="contact-grid">
+          
+          <!-- Contact Form -->
+          <form>
+            <div>
+              <label for="name">Your Name</label>
+              <input type="text" id="name" name="name" />
+            </div>
+            <div>
+              <label for="email">Your Email</label>
+              <input type="email" id="email" name="email" />
+            </div>
+            <div>
+              <label for="message">Message</label>
+              <textarea id="message" name="message" rows="4"></textarea>
+            </div>
+            <button type="submit" class="btn btn-large">
+              Send Message
+            </button>
+          </form>
+          
+          <!-- Contact Info -->
+          <div class="contact-info">
+            <h3>Contact Info</h3>
+            <p>Reach out to us for reservations or any inquiries. We're here to make your stay unforgettable.</p>
+            <div>
+              <div class="contact-info-item">
+                <i data-lucide="map-pin"></i>
+                <span>123, Juhu Beach, Mumbai, MH 400049</span>
+              </div>
+              <div class="contact-info-item">
+                <i data-lucide="phone"></i>
+                <span>+91 (22) 5555 1234</span>
+              </div>
+              <div class="contact-info-item">
+                <i data-lucide="mail"></i>
+                <span>reservations@blueorchid.in</span>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="glass">
+    <div class="container">
+      <h3>Blue Orchid</h3>
+      <div class="social-links">
+        <a href="https://facebook.com" target="_blank" rel="noopener noreferrer"><i data-lucide="facebook"></i></a>
+        <a href="https://instagram.com" target="_blank" rel="noopener noreferrer"><i data-lucide="instagram"></i></a>
+        <a href="https://twitter.com" target="_blank" rel="noopener noreferrer"><i data-lucide="twitter"></i></a>
+      </div>
+      <p>Luxury by the Sea | © 2025 Blue Orchid. All rights reserved.</p>
+    </div>
+  </footer>
+  
+  
+  <!-- REMOVED: Booking Modal HTML -->
+
+  <!-- Custom Alert Placeholder -->
+  <!-- The customAlert() function will create this element if it doesn't exist -->
+  
+  <!-- Firebase SDK (Added for booking form) -->
+  <script type="module">
+    <!-- REMOVED: All Firebase and modal logic -->
+
+    // --- Original Script Logic ---
+    document.addEventListener('DOMContentLoaded', () => {
+    
+      // --- Lucide Icons ---
+      try {
+        lucide.createIcons();
+      } catch (e) {
+        console.error('Lucide icons failed to create:', e);
+      }
+
+      // --- Scroll Animations ---
+      const scrollElements = document.querySelectorAll('[data-animate-on-scroll]');
+      const handleScrollAnimation = () => {
+        scrollElements.forEach((el) => {
+          const rect = el.getBoundingClientRect();
+          // Check if element is in viewport (with a 15% buffer)
+          if (rect.top < window.innerHeight * 0.85 && rect.bottom > 0) {
+            el.classList.add('is-visible');
+          }
+        });
+      };
+      window.addEventListener('scroll', handleScrollAnimation);
+      // Use setTimeout to ensure animations run after page load
+      window.setTimeout(handleScrollAnimation, 100);
+
+      // --- Mobile Menu ---
+      const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+      const mobileMenu = document.getElementById('mobile-menu');
+      const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+      
+      if (mobileMenuBtn && mobileMenu) {
+        mobileMenuBtn.addEventListener('click', () => {
+          mobileMenu.classList.toggle('show');
+        });
+      }
+      
+      // Hide menu when a link is clicked
+      mobileNavLinks.forEach(link => {
+        link.addEventListener('click', () => {
+          if (mobileMenu) {
+            mobileMenu.classList.remove('show');
+          }
+        });
+      });
+
+      // --- REMOVED: Booking Modal Logic ---
+      
+      // --- REMOVED: Firebase Init ---
+
+      // --- Form Handling (Example) ---
+      const contactForm = document.querySelector('#contact form');
+      // REMOVED: bookingForm and its submit listener
+
+      if (contactForm) {
+        contactForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          console.log('Contact form submitted');
+          alert('Thank you for your message!'); // Using custom alert
+          contactForm.reset();
+        });
+      }
+      
+      // REMOVED: bookingForm submit listener
+      
+      // Simple alert override for a nicer message box
+      const customAlert = (message) => {
+        let alertBox = document.getElementById('custom-alert');
+        if (!alertBox) {
+          alertBox = document.createElement('div');
+          alertBox.id = 'custom-alert';
+          alertBox.className = 'glass'; // Use .glass style
+          document.body.appendChild(alertBox);
+        }
+        
+        alertBox.textContent = message;
+        alertBox.style.transform = 'translateX(0)';
+        alertBox.style.opacity = '1';
+        
+        setTimeout(() => {
+          alertBox.style.transform = 'translateX(100%)';
+          alertBox.style.opacity = '0';
+        }, 3000);
+      }
+      
+      // Replace default alert behavior
+      window.alert = customAlert;
+
+    }); // --- End of DOMContentLoaded ---
+  </script>
+</body>
+</html>
